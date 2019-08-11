@@ -1,0 +1,2 @@
+https://github.com/Azure/azure-quickstart-templates - Azure quickstart JSON templates
+https://azure.microsoft.com/en-us/resources/templates/ - Nicer view of templates
