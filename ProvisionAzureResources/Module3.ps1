@@ -77,6 +77,10 @@ New-AzVM -Name johnvm -Credential (Get-Credential) -Verbose -WhatIf
 
 New-AzVM -Name johnvm -Credential (Get-Credential) -Image UbuntuLTS -Verbose -WhatIf
 
+#Deploy an ARM template
+New-AzResourceGroupDeployment -ResourceGroupName RG-IaCSample `
+    -TemplateFile "StorageAccount.json" `
+    -TemplateParameterFile "StorageAccount.parameters.json"
 
 
 #CLI Use
@@ -95,3 +99,6 @@ az account list-locations
 az vm list-sizes --location eastus2
 #To quickly create a VM with many default values:
 az vm create -n MyVm -g MyResourceGroup --image UbuntuLTS
+
+#Deploy an ARM template (@ for parameter means local file)
+az group deployment create --resource-group "RG-IaCSample" --template-file "StorageAccount.json" --parameters "@StorageAccount.parameters.json"
