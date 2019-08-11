@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "myAdminUsername": {
+        "type": "string",
+        "minLength": 4
+      },
+      "myAdminPassword": {
+        "type": "securestring"
+      }
+    },
+    "resources": [
+    ],
+    "outputs": {
+      "password": {
+        "type": "securestring",
+        "value": "[parameters('myAdminPassword')]"
+      },
+      "passwordplain": {
+        "type": "string",
+        "value": "[parameters('myAdminPassword')]"
+      }
+    }
+  }
