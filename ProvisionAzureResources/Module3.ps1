@@ -52,10 +52,14 @@ Get-AzContextAutosaveSetting
 Select-AzContext "SavillTech Prod"
 
 Get-Command -Module Az.Compute
+Get-Command -Module Az.Compute -Verb New
+Get-Command -Module Az.Compute -Noun AzVM
 
 Get-AzResourceGroup
 
 Get-AzVM
+Get-AzVM -status | ft name, powerstate -AutoSize
+Get-AzVM -status | where {$_.powerstate -ne "VM Running"}
 
 #Look at secrets
 (Get-AzKeyVaultSecret –VaultName 'SavKeyVault' `
@@ -71,6 +75,18 @@ Get-AzVMImagePublisher -Location $loc
 Get-AzVMImageOffer -Location $loc -PublisherName "MicrosoftWindowsServer"
 Get-AzVMImageSku -Location $loc -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer"
 Get-AzVMImage -Location $loc -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer" -Skus "2019-Datacenter-Core"
+#can use -latest when actually using
+
+#View Ubuntu
+#View the templates available
+Get-AzVMImagePublisher -Location $loc
+Get-AzVMImageOffer -Location $loc -PublisherName "Canonical"
+Get-AzVMImageSku -Location $loc -PublisherName "Canonical" -Offer "UbuntuServer"
+Get-AzVMImage -Location $loc -PublisherName "Canonical" -Offer "UbuntuServer" -Skus "18.04-LTS"
+Get-AzVMImage -Location $loc -PublisherName "Canonical" -Offer "UbuntuServer" -Skus "18.04-LTS" -Version "18.04.201908131"
+
+#Create an RG
+New-AzResourceGroup -Name "TestRG" -Location "southcentralus"
 
 #Create easy VM
 New-AzVM -Name johnvm -Credential (Get-Credential) -Verbose -WhatIf
@@ -89,15 +105,19 @@ az login
 az account list
 
 #To switch I would use (note this automatically uses the profile for the selected subscription including the credential)
-az account switch --s "subscription name"
+az account set --s "subscription name"
 #To see the current profile, I can use
 az account show
 
 #To view the available regions I would use the following:
 az account list-locations
-#To view the VM sizes available in a region (note the 2 dashes before location):
+
+#Create an RG
+az group create --location southcentralus --name testRG
+
+#To view the VM sizes available in a region (note the 2 dashes before location)
 az vm list-sizes --location eastus2
-#To quickly create a VM with many default values:
+#To quickly create a VM with many default values
 az vm create -n MyVm -g MyResourceGroup --image UbuntuLTS
 
 #Deploy an ARM template (@ for parameter means local file)
